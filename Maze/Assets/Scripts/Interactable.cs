@@ -1,4 +1,4 @@
-﻿
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour {
@@ -11,6 +11,8 @@ public class Interactable : MonoBehaviour {
 
     public Item item;
 
+    public Text interactUI;
+
     private void Awake()
     {
         sphere = GetComponent<SphereCollider>();
@@ -19,6 +21,8 @@ public class Interactable : MonoBehaviour {
             sphere.radius = radius;
             sphere.isTrigger = true;
         }
+
+        interactUI.enabled = false;
     }
 
     private void OnTriggerStay(Collider col)
@@ -27,11 +31,19 @@ public class Interactable : MonoBehaviour {
         
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        interactUI.enabled = false;
+    }
+
     public virtual void Interact(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
             //display UI for player
+
+            interactUI.enabled = true;
+
             //Debug.Log("Can Interact");
 
             if (Input.GetKeyDown(KeyCode.F))
@@ -56,7 +68,7 @@ public class Interactable : MonoBehaviour {
                 {
                     Debug.LogWarning("Object Does not have a tag");
                 }
-
+                interactUI.enabled = false;
             }
 
         }
