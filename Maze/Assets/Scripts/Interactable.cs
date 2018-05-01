@@ -9,14 +9,25 @@ public class Interactable : MonoBehaviour {
 
     SphereCollider sphere;
 
+    public Item item;
+
     private void Awake()
     {
         sphere = GetComponent<SphereCollider>();
-        sphere.radius = radius;
-        sphere.isTrigger = true;
+        if (sphere != null)
+        {
+            sphere.radius = radius;
+            sphere.isTrigger = true;
+        }
     }
 
     private void OnTriggerStay(Collider col)
+    {
+            Interact(col);
+        
+    }
+
+    public virtual void Interact(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
@@ -25,12 +36,30 @@ public class Interactable : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                //if player presses "F" they pick up the Item
-                Debug.Log("Picked Up Item");
+                if (this.gameObject.tag == "Item")
+                {
+                    //if player presses "F" they pick up the Item
+                    Debug.Log("Picked Up Item");
+                    InventoryManager.instance.addItem(item);
+                    //destroy item
+                    Destroy(this.gameObject);
+                }
+                else if (this.gameObject.tag == "Obstacle")
+                {
+                    Debug.Log("MoveObstacle");
+                    InventoryManager.instance.removeItem(item);
+                    //destroy obstacle
+                    Destroy(this.gameObject);
+
+                }
+                else if(this.gameObject.tag == "Untagged")
+                {
+                    Debug.LogWarning("Object Does not have a tag");
+                }
 
             }
-        }
 
+        }
     }
 
 

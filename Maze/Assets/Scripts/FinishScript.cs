@@ -10,6 +10,7 @@ public class FinishScript : MonoBehaviour {
         if(other.gameObject.tag == "Player")
         {
             Debug.Log("Player Finished");
+            //Debug.Log(InventoryManager.instance.items);
         }
     }
 
